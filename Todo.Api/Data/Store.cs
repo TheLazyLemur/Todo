@@ -2,7 +2,7 @@ namespace Todo.Api.Data;
 
 public class Store
 {
-    public static Dictionary<string, Todo> Todos = new()
+    public Dictionary<string, Todo> Todos = new()
     {
         {
             "abc123", new Todo()

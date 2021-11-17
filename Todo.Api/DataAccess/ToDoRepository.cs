@@ -4,6 +4,8 @@ namespace Todo.Api.DataAccess;
 
 public class ToDoRepository : IToDoRepository
 {
+    private readonly Store _store = new();
+
     public Task<Data.Todo> Add(Data.Todo todo)
     {
         if (todo.Name == "I'm lazy")
@@ -17,19 +19,19 @@ public class ToDoRepository : IToDoRepository
             Completed = todo.Completed,
         };
 
-        Store.Todos.Add(newId, createdTodo);
+        _store.Todos.Add(newId, createdTodo);
 
         return Task.FromResult(createdTodo);
     }
 
     public Task<List<Data.Todo>> List()
     {
-        return Task.FromResult(Store.Todos.Values.ToList());
+        return Task.FromResult(_store.Todos.Values.ToList());
     }
 
     public Task<Data.Todo> Update(string id, Data.Todo newTodoValues)
     {
-        var todoToUpdate = Store.Todos[id];
+        var todoToUpdate = _store.Todos[id];
 
         if (todoToUpdate is null)
             throw new Exception("Todo not found");
@@ -42,7 +44,7 @@ public class ToDoRepository : IToDoRepository
 
     public Task Delete(string id)
     {
-        Store.Todos.Remove(id);
+        _store.Todos.Remove(id);
         return Task.CompletedTask;
     }
 }
