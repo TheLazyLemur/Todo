@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Todo.Api.Data;
+using Todo.Api.DataAccess;
 
 namespace Todo.Api.Controllers;
 
@@ -7,30 +8,61 @@ namespace Todo.Api.Controllers;
 [Route("/todos")]
 public class TodoController : ControllerBase
 {
+    private readonly IToDoRepository _toDoRepository;
+
+    public TodoController(IToDoRepository toDoRepository)
+    {
+        _toDoRepository = toDoRepository;
+    }
+
     [HttpGet]
-    public ActionResult<Todos> ListTodos()
+    public async Task<ActionResult<Todos>> ListTodos()
     {
         return new Todos()
         {
-            Items = new List<Data.Todo>()
+            Items = await _toDoRepository.List()
         };
     }
 
     [HttpPost]
-    public ActionResult<Data.Todo> Add()
+    public async Task<ActionResult<Data.Todo>> Add(Data.Todo todo)
     {
-        return Ok(new Data.Todo());
+        try
+        {
+            var result = await _toDoRepository.Add(todo);
+            return Ok(result);
+        }
+        catch
+        {
+            return StatusCode(500, "Oops something went wrong");
+        }
     }
 
     [HttpPut("{id}")]
-    public ActionResult<Data.Todo> Update(string id, Data.Todo newTodoValues)
+    public async Task<ActionResult<Data.Todo>> Update(string id, Data.Todo newTodoValues)
     {
-        return Ok(new Data.Todo());
+        try
+        {
+            var result = await _toDoRepository.Update(id, newTodoValues);
+            return Ok(result);
+        }
+        catch
+        {
+            return StatusCode(500, "Oops something went wrong");
+        }
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(string id)
+    public async Task<ActionResult> Delete(string id)
     {
-        return Ok();
+        try
+        {
+            await _toDoRepository.Delete(id);
+            return Ok();
+        }
+        catch
+        {
+            return StatusCode(500, "Oops something went wrong");
+        }
     }
 }
