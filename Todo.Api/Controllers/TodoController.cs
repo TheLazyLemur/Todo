@@ -27,21 +27,42 @@ public class TodoController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Data.Todo>> Add(Data.Todo todo)
     {
-        var result = await _toDoRepository.Add(todo);
-        return Ok(result);
+        try
+        {
+            var result = await _toDoRepository.Add(todo);
+            return Ok(result);
+        }
+        catch
+        {
+            return StatusCode(500, "Oops something went wrong");
+        }
     }
 
     [HttpPut("{id}")]
     public async Task<ActionResult<Data.Todo>> Update(string id, Data.Todo newTodoValues)
     {
-        var result = await _toDoRepository.Update(id, newTodoValues);
-        return Ok(result);
+        try
+        {
+            var result = await _toDoRepository.Update(id, newTodoValues);
+            return Ok(result);
+        }
+        catch
+        {
+            return StatusCode(500, "Oops something went wrong");
+        }
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(string id)
+    public async Task<ActionResult> Delete(string id)
     {
-        _toDoRepository.Delete(id);
-        return Ok();
+        try
+        {
+            await _toDoRepository.Delete(id);
+            return Ok();
+        }
+        catch
+        {
+            return StatusCode(500, "Oops something went wrong");
+        }
     }
 }
