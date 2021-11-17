@@ -11,6 +11,7 @@ A Todo microservice that implements an in Memory store. The service should imple
 ### Requirements
 
 - .Net6
+- xunit (Testing)
 
 ### Run Tests
 
