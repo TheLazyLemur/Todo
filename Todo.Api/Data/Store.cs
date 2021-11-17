@@ -8,7 +8,7 @@ public class Store
             "abc123", new Todo()
             {
                 Id = "abc123",
-                Name = "Default todo",
+                Name = "Do some work",
                 Completed = false
             }
         }
