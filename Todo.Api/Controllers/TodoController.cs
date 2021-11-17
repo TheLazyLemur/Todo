@@ -23,7 +23,7 @@ public class TodoController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public ActionResult<Data.Todo> Update(string id)
+    public ActionResult<Data.Todo> Update(string id, Data.Todo newTodoValues)
     {
         return Ok(new Data.Todo());
     }
