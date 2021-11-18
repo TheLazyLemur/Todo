@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Todo.Api.DataAccess;
 using Xunit;
 using Xunit.Abstractions;
@@ -16,23 +17,18 @@ public class TodoRepositoryTest
     }
 
     [Fact]
-    public void Add_Should_Fail_When_Name_Is_Im_Lazy()
+    public async Task AddShouldFail_WhenNameIsImLazy()
     {
         //Arrange
         IToDoRepository todoRepository = new ToDoRepository();
 
-        try
-        {
-            todoRepository.Add(new Api.Data.Todo() {Name = "I'm lazy"});
-        }
-        catch (Exception e)
-        {
-            Assert.Contains("Name is I'm lazy", e.Message);
-        }
+        // Act
+        //Assert
+        await Assert.ThrowsAsync<Exception>(() => todoRepository.Add(new Api.Data.Todo() {Name = "I'm lazy"}));
     }
 
     [Fact]
-    public void Default_Should_Return_Single_Todo()
+    public void DefaultShouldReturn_SingleTodo()
     {
         //Arrange
         IToDoRepository todoRepository = new ToDoRepository();
@@ -46,7 +42,7 @@ public class TodoRepositoryTest
     }
 
     [Fact]
-    public void Update_Does_Not_Change_Id_But_Other_Props()
+    public void UpdateDoesNotChangeId_ButOtherProps()
     {
         //Arrange
         IToDoRepository todoRepository = new ToDoRepository();
