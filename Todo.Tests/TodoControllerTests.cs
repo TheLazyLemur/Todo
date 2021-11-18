@@ -40,4 +40,25 @@ public class TodoControllerTests
         Assert.NotNull(n);
         Assert.Equal(500, n?.StatusCode);
     }
+
+    [Fact]
+    public async Task UpdateShouldFail_WhenTodoDoesNotExist_Return500()
+    {
+        var todoId = "testid";
+        var todo = new Todo.Api.Data.Todo()
+        {
+            Id = "abc123",
+            Name = "I'm lazy",
+            Completed = false
+        };
+
+        _mock.Setup(x => x.Update(todoId, todo)).ThrowsAsync(new Exception());
+
+        var response = await _sut.Update(todoId, todo);
+
+        var n = response.Result as ObjectResult;
+
+        Assert.NotNull(n);
+        Assert.Equal(500, n?.StatusCode);
+    }
 }

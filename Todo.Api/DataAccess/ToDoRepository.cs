@@ -31,15 +31,16 @@ public class ToDoRepository : IToDoRepository
 
     public Task<Data.Todo> Update(string id, Data.Todo newTodoValues)
     {
-        var todoToUpdate = _store.Todos[id];
-
-        if (todoToUpdate is null)
+        var exists = _store.Todos.TryGetValue(id, out var todo);
+        if (!exists || todo is null)
             throw new Exception("Todo not found");
 
-        todoToUpdate.Completed = newTodoValues.Completed;
-        todoToUpdate.Name = newTodoValues.Name;
+        todo.Completed = newTodoValues.Completed;
+        todo.Name = newTodoValues.Name;
 
-        return Task.FromResult(todoToUpdate);
+        _store.Todos[id] = todo;
+
+        return Task.FromResult(todo);
     }
 
     public Task Delete(string id)
