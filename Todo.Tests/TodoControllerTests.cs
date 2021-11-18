@@ -38,6 +38,6 @@ public class TodoControllerTests
         var n = response.Result as ObjectResult;
 
         Assert.NotNull(n);
-        Assert.Equal(500, n.StatusCode);
+        Assert.Equal(500, n?.StatusCode);
     }
 }
