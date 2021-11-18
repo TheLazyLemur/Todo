@@ -31,6 +31,7 @@ A Todo microservice that implements an in Memory store. The service should imple
 ### Service Design
 
 This service follows a repository pattern with the main repository hidden behind an interface to hide its implmentation,
-making it easier to Mock. 
+making it easier to Mock. The two possible results for endpoints to return are success and a generic error.
+The spec did not mention other possible return codes.
 
 I am using github actions to ensure code compliance when commit are made.
